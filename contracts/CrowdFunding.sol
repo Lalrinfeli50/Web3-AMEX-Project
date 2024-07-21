@@ -25,7 +25,7 @@ contract CrowdFunding {
 
 
     // Variables in 'memory' are temporary and only exist for the duration of the function call. The 'storage' keyword is used for variables that are stored on the blockchain. 
-    // 
+
     function createCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
 
@@ -46,6 +46,8 @@ contract CrowdFunding {
         return numberOfCampaigns - 1;
     }
 
+
+
     // payable, meaning it can receive Ether
 
     // The function performs the following steps:
@@ -55,8 +57,13 @@ contract CrowdFunding {
     //     Transfers the donation amount to the campaign owner.
     //     If the transfer is successful, updates the total amount collected for the campaign.
     function donateToCampaign(uint256 _id) public payable {
+
+        // When a user calls the donateToCampaign function and sends Ether, msg.value contains the amount of Ether in wei. 
+        // This line stores that value in the amount variable
+        // 'msg' is a global variable that contains information about the current transaction
         uint256 amount = msg.value;
 
+        // fetches the corresponding Campaign struct from the campaigns mapping
         Campaign storage campaign = campaigns[_id];
 
         campaign.donators.push(msg.sender);
@@ -90,4 +97,5 @@ contract CrowdFunding {
         return allCampaigns;
     }
 
+}
 }
